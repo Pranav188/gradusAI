@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>gradusAI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { width: 400px; font-family: 'Inter', sans-serif; }
+        .loader {
+            border: 4px solid #4A5568; /* gray-700 */
+            border-top: 4px solid #6366F1; /* indigo-500 */
+            border-radius: 50%;
+            width: 32px; height: 32px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #results-container ul { list-style-position: inside; }
+        #results-container li { margin-bottom: 0.5rem; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white p-4">
+
+    <!-- Main View -->
+    <div id="main-view">
+        <div class="flex items-center justify-between mb-4">
+            <h1 class="text-2xl font-bold text-gray-100">gradusAI</h1>
+            <button id="settings-btn" title="Settings">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 hover:text-white transition-colors"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </button>
+        </div>
+
+        <div class="space-y-3">
+            <button id="insights-btn" class="w-full text-left p-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors">
+                <h2 class="font-semibold">Get Topic Insights</h2>
+                <p class="text-sm text-indigo-200">Get a quick revision of the concepts for this problem.</p>
+            </button>
+            <button id="steps-btn" class="w-full text-left p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                <h2 class="font-semibold">Generate Step-by-Step Guide</h2>
+                <p class="text-sm text-gray-300">Break down the problem into logical steps (no code).</p>
+            </button>
+        </div>
+
+        <div id="loading" class="hidden flex justify-center items-center my-6">
+            <div class="loader"></div>
+        </div>
+
+        <div id="results-container" class="mt-4 p-3 bg-gray-800 rounded-lg text-gray-300 text-sm hidden prose prose-invert max-w-none"></div>
+        <div id="error-container" class="mt-4 p-3 bg-red-900 border border-red-700 rounded-lg text-red-300 text-sm hidden"></div>
+    </div>
+
+    <!-- Settings View -->
+    <div id="settings-view" class="hidden">
+        <h1 class="text-xl font-bold text-center mb-4">Settings</h1>
+        <div class="mb-4">
+           <label for="api-key-input" class="block text-sm font-medium text-gray-300 mb-1">Gemini API Key</label>
+           <input type="password" id="api-key-input" class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg p-2 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <button id="save-key-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg">Save Key</button>
+        <button id="back-btn" class="w-full mt-2 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg">Back</button>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
