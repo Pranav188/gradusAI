@@ -8,3 +8,13 @@ GradusAI is a Chrome extension that helps students solve LeetCode problems more 
 3. Rename it to `config.js`.
 4. Open `config.js` and paste in your personal Google Gemini API key.
 5. Load the extension into Chrome using the "Load unpacked" button in `chrome://extensions` (make sure developer mode is toggeled on).
+
+## Implementation
+
+Here are some screenshots of GradusAI in action:
+
+### Screenshot 1
+![Extension Popup](screenshots/Screenshot 2025-08-30 at 17.51.22.png.png)
+
+### Screenshot 2
+![LeetCode Integration](screenshots/Screenshot 2025-08-30 at 17.51.39.png)
