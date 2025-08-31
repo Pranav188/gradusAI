@@ -14,7 +14,7 @@ GradusAI is a Chrome extension that helps students solve LeetCode problems more 
 Here are some screenshots of GradusAI in action:
 
 ### Screenshot 1
-![Extension Popup](screenshots/Screenshot 2025-08-30 at 17.51.22.png.png)
+![Extension Popup](screenshots/screenshot1.png)
 
 ### Screenshot 2
-![LeetCode Integration](screenshots/Screenshot 2025-08-30 at 17.51.39.png)
+![LeetCode Integration](screenshots/screenshot2.png)
