@@ -2,63 +2,160 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gradusAI</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { width: 400px; font-family: 'Inter', sans-serif; }
+        :root {
+            /* --- CHANGE: Dark Mode Color Palette --- */
+            --bg-color: #1e1e1e; /* Dark background */
+            --secondary-bg-color: #2d2d2d; /* Slightly lighter for buttons */
+            --text-color: #e0e0e0; /* Light text */
+            --primary-color: #58a6ff; /* A bright blue for accents */
+            --border-color: #444; /* Dark border color */
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            width: 380px;
+            font-size: 14px;
+        }
+        .container {
+            padding: 16px;
+        }
+        .view {
+            display: none;
+        }
+        .view.active {
+            display: block;
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 16px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .btn {
+            background-color: var(--secondary-bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        .btn:hover {
+            background-color: #3d3d3d; /* Hover effect for dark buttons */
+        }
+        .btn strong {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .btn span {
+            font-size: 12px;
+            opacity: 0.7;
+        }
         .loader {
-            border: 4px solid #4A5568; /* gray-700 */
-            border-top: 4px solid #6366F1; /* indigo-500 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+        }
+        .spinner {
+            border: 4px solid var(--secondary-bg-color);
+            border-top: 4px solid var(--primary-color);
             border-radius: 50%;
-            width: 32px; height: 32px;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #results-container ul { list-style-position: inside; }
-        #results-container li { margin-bottom: 0.5rem; }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #results-view {
+            padding: 8px 16px 16px 16px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        #results-content {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.6;
+        }
+        #results-content h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        #results-content ul, #results-content ol {
+            padding-left: 20px;
+        }
+        #results-content li {
+            margin-bottom: 10px;
+        }
+        .back-btn {
+            background-color: transparent;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+        .error {
+            color: #ff8a80;
+            background-color: rgba(255, 138, 128, 0.1);
+            border: 1px solid rgba(255, 138, 128, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 13px;
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-white p-4">
+<body>
 
     <!-- Main View -->
-    <div id="main-view">
-        <div class="flex items-center justify-between mb-4">
-            <h1 class="text-2xl font-bold text-gray-100">gradusAI</h1>
-            <button id="settings-btn" title="Settings">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 hover:text-white transition-colors"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+    <div id="main-view" class="view active">
+        <div class="container">
+            <div class="header">
+                <h1>gradusAI</h1>
+            </div>
+            <button id="get-insights-btn" class="btn">
+                <strong>Get Topic Insights</strong>
+                <span>Get a quick revision of the concepts for this problem.</span>
+            </button>
+            <button id="get-steps-btn" class="btn">
+                <strong>Generate Step-by-Step Guide</strong>
+                <span>Break down the problem into logical steps (no code).</span>
             </button>
         </div>
-
-        <div class="space-y-3">
-            <button id="insights-btn" class="w-full text-left p-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors">
-                <h2 class="font-semibold">Get Topic Insights</h2>
-                <p class="text-sm text-indigo-200">Get a quick revision of the concepts for this problem.</p>
-            </button>
-            <button id="steps-btn" class="w-full text-left p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
-                <h2 class="font-semibold">Generate Step-by-Step Guide</h2>
-                <p class="text-sm text-gray-300">Break down the problem into logical steps (no code).</p>
-            </button>
-        </div>
-
-        <div id="loading" class="hidden flex justify-center items-center my-6">
-            <div class="loader"></div>
-        </div>
-
-        <div id="results-container" class="mt-4 p-3 bg-gray-800 rounded-lg text-gray-300 text-sm hidden prose prose-invert max-w-none"></div>
-        <div id="error-container" class="mt-4 p-3 bg-red-900 border border-red-700 rounded-lg text-red-300 text-sm hidden"></div>
     </div>
 
-    <!-- Settings View -->
-    <div id="settings-view" class="hidden">
-        <h1 class="text-xl font-bold text-center mb-4">Settings</h1>
-        <div class="mb-4">
-           <label for="api-key-input" class="block text-sm font-medium text-gray-300 mb-1">Gemini API Key</label>
-           <input type="password" id="api-key-input" class="w-full bg-gray-800 border border-gray-700 text-white rounded-lg p-2 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+    <!-- Loading View -->
+    <div id="loading-view" class="view">
+        <div class="loader">
+            <div class="spinner"></div>
         </div>
-        <button id="save-key-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg">Save Key</button>
-        <button id="back-btn" class="w-full mt-2 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg">Back</button>
+    </div>
+
+    <!-- Results View -->
+    <div id="results-view" class="view">
+        <button id="back-btn" class="back-btn">&larr; Back to Main</button>
+        <div id="results-content"></div>
     </div>
 
     <script src="popup.js"></script>
 </body>
 </html>
+
