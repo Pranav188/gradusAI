@@ -1,5 +1,5 @@
 # gradusAI
-GradusAI is a Chrome extension that helps students solve LeetCode problems more effectively.
+GradusAI is a Chrome extension that helps students solve LeetCode problems more effectively. Recognizing that official hints can often be confusing and create more ambiguity, the extension integrates the Google Gemini API directly into the LeetCode interface to provide clearer, more contextual guidance. It offers two levels of assistance: a quick revision of the problem's core concepts based on its official tags, and a detailed, step-by-step logical guide to the solution's algorithm. By focusing on the thought process rather than the final code, GradusAI fosters genuine understanding and empowers users to improve their problem-solving skills.
 
 ## Setup Instructions
 

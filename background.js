@@ -1,6 +1,4 @@
-import { API_KEY } from "./config";
-
-
+import { API_KEY } from './config.js';
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const { type, data } = message;
@@ -23,6 +21,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 async function callGeminiAPI(systemPrompt, userPrompt) {
+    // --- FIX: Corrected the typo in the URL from "launguage" to "language" ---
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
     const payload = {
         systemInstruction: { parts: [{ text: systemPrompt }] },
@@ -45,6 +44,7 @@ async function callGeminiAPI(systemPrompt, userPrompt) {
         let htmlContent = result?.candidates?.[0]?.content?.parts?.[0]?.text;
         
         if (htmlContent) {
+            // Clean up potential markdown code blocks just in case
             htmlContent = htmlContent.replace(/^```html\n/, '').replace(/\n```$/, '');
             chrome.runtime.sendMessage({ type: 'resultsReady', data: htmlContent });
         } else {
@@ -55,4 +55,5 @@ async function callGeminiAPI(systemPrompt, userPrompt) {
         chrome.runtime.sendMessage({ type: 'generationError', data: error.message });
     }
 }
+
 

@@ -2,23 +2,28 @@
   "manifest_version": 3,
   "name": "gradusAI - LeetCode Companion",
   "version": "1.0",
-  "description": "Get AI-powered topic insights and step-by-step problem-solving guides for LeetCode.",
-  "permissions": ["activeTab", "scripting", "storage"],
-  "host_permissions": ["https://leetcode.com/problems/*"],
+  "description": "An AI-powered assistant to provide topic insights and step-by-step guides for LeetCode problems.",
+  "permissions": [
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://leetcode.com/problems/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "48": "images/gradusAI-2_48x48.png",
-      "128": "images/gradusAI.png"
+      "48": "images/gradusAI-2_48x48.png"
     }
-  },
-  "background": {
-    "service_worker": "background.js",
-    "type":"module"
   },
   "icons": {
     "48": "images/gradusAI-2_48x48.png",
     "128": "images/gradusAI.png"
   }
 }
+
 
